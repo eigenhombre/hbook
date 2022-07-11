@@ -102,26 +102,18 @@
                                      #\X
                                      #\Space))))))))
 
-(format t
-        "~&~a"
-        (hist-str (hist-values (loop repeat 100000 collect (dn 100))
-                               100)
-                  20))
-(format t
-        "~&~a"
-        (hist-str (hist-values (loop repeat 100000 collect (dn 2))
-                               11)
-                  20))
-
 (defun nspaces (n)
   (format nil "~v@{~A~:*~}" n " "))
 
 (defun pad-num (width num)
   (format nil "~A~A" (nspaces width) num))
 
-(defun count-strs (counts)
+(defun count-strs (counts decimalp)
   (let* ((as-chars (loop for c across counts
-                         collect (write-to-string c)))
+                         collect (format nil (if decimalp
+                                                 "~,2F"
+                                                 "~a")
+                                         c)))
          (max-len (apply #'max (mapcar #'length as-chars))))
     (list max-len
           (mapcar (lambda (s)
@@ -130,45 +122,45 @@
                         (pad-num (- max-len (length s)) s)))
                   as-chars))))
 
-(count-strs #(1 33 6676 10 0 5))
-;;=>
-'(4 ("   1"
-     "  33"
-     "6676"
-     "  10"
-     "    "
-     "   5"))
-
-(defun vertical-count-labels (lspace counts)
-  (destructuring-bind (max-len padded-strs) (count-strs counts)
+(defun vertical-num-labels (lspace vals &optional (decimalp nil))
+  (destructuring-bind (max-len padded-strs) (count-strs vals decimalp)
     (format nil "~{~A~^~%~}"
             (loop for i from 0 below max-len
                   collect (rtrim
                            (format nil "~A~{~A~}"
                                    (nspaces lspace)
-                                   (loop for j from 0 below (length counts)
+                                   (loop for j from 0 below (length vals)
                                          collect (elt (elt padded-strs j) i))))))))
 
-(vertical-count-labels
- 5
- #(1 33 6676 10 0 5))
-;;=>
-'"       6
-       6
-      371
-     1360 5"
-
-(defun hbook (vals nbins height)
+(defun hbook (vals &optional (nbins 50) (height 5))
   (let* ((hist (hist-values vals nbins))
          (hstr (hist-str hist height))
-         (vclabels (vertical-count-labels 11 (hist-bin-heights hist))))
-    (format nil "~A~%~A" hstr vclabels)))
+         (vclabels (vertical-num-labels 11 (hist-bin-heights hist)))
+         (vxlabels (vertical-num-labels 11 (hist-bin-xs hist) t)))
+    (format nil "~A~%~A~%~%~A" hstr vclabels vxlabels)))
 
-(defun pr (s)
-  (format t "~A~%" s))
+(defun pr (&rest s)
+  (format t "~{~A~}~%" s))
 
 (pr (hbook '(1 2 2 3) 3 5))
-
+(pr)
+(pr (hbook '(-1 0 1) 3 5))
+(pr)
+(pr (hbook (loop repeat 100000 collect (dn 2))
+           11
+           20))
+(pr)
+(pr (hbook (loop repeat 100000 collect (dn 100))
+           100
+           10))
+(pr)
 (pr (hbook (loop repeat 30000 collect (dn 3000))
            100
            30))
+(pr)
+(pr (hbook (loop repeat 1000 collect (dr 10))))
+(pr)
+(pr (hbook (loop repeat 1000000
+                 collect (* 50 (- (log (random 1.0)))))
+           50
+           20))
