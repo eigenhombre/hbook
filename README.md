@@ -2,6 +2,13 @@
 
 Text-based histograms in Common Lisp inspired by CERN's FORTRAN histograming library, HBOOK.
 
+# Disclaimer
+
+I stole the name `hbook` from the CERN library because this library overlaps substantially in terms of functionality; but the original HBOOK library is old enough that any other collision is unlikely.
+
+# Usage
+
+
 # License
 
 MIT.  See LICENSE file.
