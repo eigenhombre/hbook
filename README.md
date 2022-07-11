@@ -1,5 +1,7 @@
 # hbook
 
+![build](https://github.com/eigenhombre/hbook/actions/workflows/build.yml/badge.svg)
+
 Text-based histograms in Common Lisp inspired by CERN's FORTRAN
 histograming library, [HBOOK](https://cds.cern.ch/record/307945/files/).
 
