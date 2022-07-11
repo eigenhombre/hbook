@@ -3,10 +3,12 @@
 Text-based histograms in Common Lisp inspired by CERN's FORTRAN
 histograming library, [HBOOK](https://cds.cern.ch/record/307945/files/).
 
-`hbook` accepts a list of numbers and generates a text-based
-histogram.  This can be helpful for spot-checking bulk behaviors of
-measurements or random deviates, without having to mess around with
-getting a graphical interface working.
+`hbook` implements a key subset of the functionality of the original
+library.  It accepts a list of numbers and generates a text-based
+histogram.  Though perhaps crude by today's standards, this approach
+(from 1975!) can be helpful for spot-checking bulk behaviors of
+measurements or random deviates at the REPL, without having to mess
+around with getting a graphical interface working.
 
 # Usage
 
@@ -17,7 +19,14 @@ First, set up [Quicklisp](https://www.quicklisp.org/beta/) and
 
 # API
 
+The API currently consists of a single function:
+
     (hbook <list-of-nums> &optional (nbins 50) (height 5))
+
+The generated output shows the shape of the distribution, the exact
+bin heights, and the "x-values" of (the centers of) the bins.
+
+`hbook` returns a string, which can be printed immediately, stored for later, etc.
 
 # Examples
 
