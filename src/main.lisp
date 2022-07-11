@@ -155,8 +155,8 @@
            10))
 (pr)
 (pr (hbook (loop repeat 30000 collect (dn 3000))
-           100
-           30))
+           50
+           20))
 (pr)
 (pr (hbook (loop repeat 1000 collect (dr 10))))
 (pr)

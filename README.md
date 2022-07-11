@@ -1,13 +1,119 @@
 # hbook
 
-Text-based histograms in Common Lisp inspired by CERN's FORTRAN histograming library, HBOOK.
+Text-based histograms in Common Lisp inspired by CERN's FORTRAN
+histograming library, [HBOOK](https://cds.cern.ch/record/307945/files/).
 
 # Disclaimer
 
-I stole the name `hbook` from the CERN library because this library overlaps substantially in terms of functionality; but the original HBOOK library is old enough that any other collision is unlikely.
+After looking through the ancient manuals from CERN, and finding no
+evidence of a trademark or similar encumbrance, I borrowed the name
+`hbook` from the original CERN library because this library overlaps
+substantially in terms of functionality; but the original HBOOK
+library is old enough that any other correspondence or conflict is
+unlikely, and no actual code from the original library is used in this
+one.
 
 # Usage
 
+First, set up [Quicklisp](https://www.quicklisp.org/beta/) and
+[Ultralisp](https://ultralisp.org/).  Then,
+
+    (ql:quickload :hbook)
+
+# API
+
+    (hbook <list-of-nums> &optional (nbins 50) (height 5))
+
+# Examples
+
+Two six-sided dice:
+
+    ;; Single die:
+    (defun d () (1+ (random 6)))
+    ;; n dice, summed:
+    (defun dn (n) (loop repeat n sum (d)))
+
+    (printc (hbook (loop repeat 100000 collect (dn 2))
+                  11
+                  20))
+
+gives
+
+     15720      X
+     14892      X
+     14065      X
+     13238     XXX
+     12410     XXX
+     11583     XXX
+     10756    XXXXX
+      9928    XXXXX
+      9101    XXXXX
+      8274   XXXXXXX
+      7446   XXXXXXX
+      6619   XXXXXXX
+      5791   XXXXXXX
+      4964  XXXXXXXXX
+      4137  XXXXXXXXX
+      3309  XXXXXXXXX
+      2482 XXXXXXXXXXX
+      1655 XXXXXXXXXXX
+       827 XXXXXXXXXXX
+         0 XXXXXXXXXXX
+
+              11111
+           25813641852
+           75217502367
+           56927425112
+           80856756537
+
+                   111
+           23456789012
+           ...........
+           00000000000
+           00000000000
+
+Sum of 100 dice rolls (illustrating the [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem)):
+
+    (princ (hbook (loop repeat 30000 collect (dn 3000))
+                  50
+                  20))
+
+gives
+
+      1729                        XXX
+      1638                        XXXXX
+      1547                      XXXXXXX
+      1456                      XXXXXXXX
+      1365                     XXXXXXXXXX
+      1274                    XXXXXXXXXXXX
+      1183                    XXXXXXXXXXXX
+      1092                   XXXXXXXXXXXXX
+      1001                   XXXXXXXXXXXXXXX
+       910                  XXXXXXXXXXXXXXXX
+       819                 XXXXXXXXXXXXXXXXX
+       728                 XXXXXXXXXXXXXXXXXX
+       637                 XXXXXXXXXXXXXXXXXX
+       546               XXXXXXXXXXXXXXXXXXXXX
+       455               XXXXXXXXXXXXXXXXXXXXXX
+       364              XXXXXXXXXXXXXXXXXXXXXXXX
+       273             XXXXXXXXXXXXXXXXXXXXXXXXXX
+       182            XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        91          XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+         0 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+                             111111111111111
+                    11234568913456778765320075543211
+              11244816324634932181692182796069121440744211
+           15714018621471271267506920509905642087269881075653
+
+           11111111111111111111111111111111111111111111111111
+           00000000000000000000000000000000000000000000000000
+           11112222222333333344444445555555666666677777778888
+           57891245689123568902356790234679013467801345780124
+           71593715937159371593715937159371593715937159371594
+           ..................................................
+           00000111112222233333444445555566666777788888999990
+           02468024680257913579135791357913579135802468024680
 
 # License
 
