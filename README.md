@@ -3,15 +3,10 @@
 Text-based histograms in Common Lisp inspired by CERN's FORTRAN
 histograming library, [HBOOK](https://cds.cern.ch/record/307945/files/).
 
-# Disclaimer
-
-After looking through the ancient manuals from CERN, and finding no
-evidence of a trademark or similar encumbrance, I borrowed the name
-`hbook` from the original CERN library because this library overlaps
-substantially in terms of functionality; but the original HBOOK
-library is old enough that any other correspondence or conflict is
-unlikely, and no actual code from the original library is used in this
-one.
+`hbook` accepts a list of numbers and generates a text-based
+histogram.  This can be helpful for spot-checking bulk behaviors of
+measurements or random deviates, without having to mess around with
+getting a graphical interface working.
 
 # Usage
 
@@ -34,8 +29,8 @@ Two six-sided dice:
     (defun dn (n) (loop repeat n sum (d)))
 
     (printc (hbook (loop repeat 100000 collect (dn 2))
-                  11
-                  20))
+                   11
+                   20))
 
 gives
 
@@ -114,6 +109,16 @@ gives
            ..................................................
            00000111112222233333444445555566666777788888999990
            02468024680257913579135791357913579135802468024680
+
+# Disclaimer
+
+After looking through the ancient manuals from CERN, and finding no
+evidence of a trademark or similar encumbrance, I borrowed the name
+`hbook` from the original CERN library because this library overlaps
+substantially in terms of functionality; but the original HBOOK
+library is old enough that any other correspondence or conflict is
+unlikely, and no actual code from the original library is used in this
+one.
 
 # License
 
