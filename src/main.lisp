@@ -12,41 +12,15 @@
 
 (defun rtrim (s) (string-right-trim '(#\Space) s))
 
-;; Random sources, for testing
-(defun d () (1+ (random 6)))
-
-(defun dn (n)
-  (loop repeat n
-        sum (d)))
-
-(comment
- (dn 2)
-
- (dn (d))
-
- (dn (dn (dn (dn (d))))))
-
-(defun dr (n)
-  (loop with acc = (d)
-        repeat (1- n)
-        do (setf acc (dn acc))
-        finally (return acc)))
-
-(comment
- (dr 1)
- (dr 2)
- (dr 5)
- (dr 10)
- (loop repeat 100 collect (dr 5)))
-
 ;; Histogram Data Functions
-(defun bin-index (nbins min max el)
+(defun bin-index (nbins min max x)
   "
   For a given element el between min and max in a histogram with nbins bins,
   find the index of the bin for that element.
   "
+  (assert (not (= min max)))
   (round (* (1- nbins)
-            (/ (- el min)
+            (/ (- x min)
                (- max min)))))
 
 (defun bin-value (nbins min max i)
@@ -61,7 +35,7 @@
 (defun make-histo (min max bin-width bin-heights bin-values)
   (list min max bin-width bin-heights bin-values))
 
-(defun hist-values (numlist nbins)
+(defun histogram (numlist nbins)
   (assert numlist)
   (destructuring-bind (min max) (minmax numlist)
     (let ((bin-width (/ (1+ (- max min)) nbins))
@@ -84,6 +58,15 @@
 
 (defun hist-bin-xs (histo)
   (nth 4 histo))
+
+(defun hist-count (histo)
+  (length (hist-bin-heights histo)))
+
+(defun hist-min (histo)
+  (car histo))
+
+(defun hist-max (histo)
+  (cadr histo))
 
 (defun hist-str (histo &optional (binheight 10))
   (let* ((bins (coerce (hist-bin-heights histo) 'list))
@@ -133,7 +116,7 @@
                                          collect (elt (elt padded-strs j) i))))))))
 
 (defun hbook (vals &optional (nbins 50) (height 5))
-  (let* ((hist (hist-values vals nbins))
+  (let* ((hist (histogram vals nbins))
          (hstr (hist-str hist height))
          (vclabels (vertical-num-labels 11 (hist-bin-heights hist)))
          (vxlabels (vertical-num-labels 11 (hist-bin-xs hist) t)))
@@ -142,7 +125,26 @@
 (defun pr (&rest s)
   (format t "~{~A~}~%" s))
 
+;; Random sources, for testing
+(defun d () (1+ (random 6)))
+
+(defun dn (n)
+  (loop repeat n
+        sum (d)))
+
+(defun dr (n)
+  (loop with acc = (d)
+        repeat (1- n)
+        do (setf acc (dn acc))
+        finally (return acc)))
+
 (comment
+ (dr 1)
+ (dr 2)
+ (dr 5)
+ (dr 10)
+ (loop repeat 100 collect (dr 9))
+
  (pr (hbook '(1 2 2 3) 3 5))
  (pr)
  (pr (hbook '(-1 0 1) 3 5))
