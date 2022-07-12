@@ -1,8 +1,8 @@
 (defsystem :hbook
   :version "0.0.1"
-  :description "FIXME"
-  :author "FIXME"
-  :license "FIXME"
+  :description "Text-based histograms in Common Lisp inspired by the venerable HBOOK histogramming library from CERN"
+  :author "John Jacobsen"
+  :license "MIT"
   :serial t
   :in-order-to ((asdf:test-op (asdf:test-op :hbook/test)))
   :depends-on (:cl-oju :1am)
@@ -12,9 +12,9 @@
                              (:file "main" :depends-on ("package"))))))
 
 (defsystem :hbook/test
-  :description "FIXME"
-  :author "FIXME"
-  :license "FIXME"
+  :description "Testing for hbook"
+  :author "John Jacobsen"
+  :license "MIT"
   :depends-on (:hbook :1am :cl-oju)
   :serial t
   :components ((:module "test"
