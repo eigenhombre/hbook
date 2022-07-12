@@ -16,7 +16,7 @@ library.  It accepts a list of numbers and generates a text-based
 histogram.  Though perhaps crude by today's standards, this approach
 (from 1975!) can be helpful for spot-checking bulk behaviors of
 measurements or random deviates at the REPL, without having to mess
-around with getting a graphical interface working.
+around getting a graphical interface working.
 
 # Usage
 
