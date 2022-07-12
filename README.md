@@ -174,10 +174,10 @@ Just for fun, an exponential deviate:
 After looking through the ancient manuals from CERN, and finding no
 evidence of a trademark or similar encumbrance, I borrowed the name
 `hbook` from the original CERN library because this library overlaps
-substantially in terms of functionality; but the original HBOOK
-library is old enough that any other correspondence or conflict is
-unlikely, and no actual code from the original library is used in this
-one.
+substantially in terms of functionality (and for nostalgia's sake);
+but the original HBOOK library is old enough that any other
+correspondence or conflict is unlikely, and no actual code from the
+original library is used in this one.
 
 # License
 
