@@ -45,9 +45,9 @@ Two six-sided dice:
     ;; n dice, summed:
     (defun dn (n) (loop repeat n sum (d)))
 
-    (printc (hbook (loop repeat 100000 collect (dn 2))
-                   11
-                   20))
+    (princ (hbook:hbook (loop repeat 100000 collect (dn 2))
+                        11
+                        20))
 
 gives
 
@@ -86,9 +86,9 @@ gives
 
 Sum of 100 dice rolls (illustrating the [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem)):
 
-    (princ (hbook (loop repeat 30000 collect (dn 3000))
-                  50
-                  20))
+    (princ (hbook:hbook (loop repeat 30000 collect (dn 3000))
+                        50
+                        20))
 
 gives
 
@@ -129,10 +129,10 @@ gives
 
 Just for fun, an exponential deviate:
 
-    (princ (hbook (loop repeat 1000000
-                        collect (* 50 (- (log (random 1.0)))))
-                  50
-                  20))
+    (princ (hbook:hbook (loop repeat 1000000
+                              collect (* 50 (- (log (random 1.0)))))
+                        50
+                        20))
 
     192145  X
     182032  X
