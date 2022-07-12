@@ -1,30 +1,9 @@
 (in-package #:hbook)
 
-(defun d () (1+ (random 6)))
-
-(defun dn (n)
-  (loop repeat n
-        sum (d)))
-
-(dn 2)
-
-(dn (d))
-
-(dn (dn (dn (dn (d)))))
-
-(defun dr (n)
-  (loop with acc = (d)
-        repeat (1- n)
-        do (setf acc (dn acc))
-        finally (return acc)))
-
-(dr 1)
-(dr 2)
-(dr 5)
-(dr 10)
-(loop repeat 100 collect (dr 5))
-
 ;; Utilities
+(defmacro comment (&rest x)
+  (declare (ignore x)))
+
 (defun minmax (list)
   (loop for el in list
         maximizing el into max
@@ -32,6 +11,33 @@
         finally (return (list min max))))
 
 (defun rtrim (s) (string-right-trim '(#\Space) s))
+
+;; Random sources, for testing
+(defun d () (1+ (random 6)))
+
+(defun dn (n)
+  (loop repeat n
+        sum (d)))
+
+(comment
+ (dn 2)
+
+ (dn (d))
+
+ (dn (dn (dn (dn (d))))))
+
+(defun dr (n)
+  (loop with acc = (d)
+        repeat (1- n)
+        do (setf acc (dn acc))
+        finally (return acc)))
+
+(comment
+ (dr 1)
+ (dr 2)
+ (dr 5)
+ (dr 10)
+ (loop repeat 100 collect (dr 5)))
 
 ;; Histogram Data Functions
 (defun bin-index (nbins min max el)
@@ -59,7 +65,9 @@
   (assert numlist)
   (destructuring-bind (min max) (minmax numlist)
     (let ((bin-width (/ (1+ (- max min)) nbins))
-          (bin-heights (make-array nbins :element-type 'integer))
+          (bin-heights (make-array nbins
+                                   :element-type 'integer
+                                   :initial-element 0))
           (bin-xs (make-array nbins :element-type 'integer)))
       (loop for i below nbins
             do (setf (elt bin-xs i) (bin-value nbins min max i)))
@@ -76,14 +84,6 @@
 
 (defun hist-bin-xs (histo)
   (nth 4 histo))
-
-(hist-values '(0 1 2) 3)
-(hist-values '(-1 0 1) 3)
-(hist-values '(-2 0 2) 3)
-(hist-values '(1 2 2 3) 3)
-(hist-values '(10 20 20 30) 3)
-(hist-values (loop repeat 10000 collect (dr 6)) 30)
-(hist-values (loop repeat 100000 collect (dn 100)) 10)
 
 (defun hist-str (histo &optional (binheight 10))
   (let* ((bins (coerce (hist-bin-heights histo) 'list))
@@ -142,25 +142,26 @@
 (defun pr (&rest s)
   (format t "~{~A~}~%" s))
 
-(pr (hbook '(1 2 2 3) 3 5))
-(pr)
-(pr (hbook '(-1 0 1) 3 5))
-(pr)
-(pr (hbook (loop repeat 100000 collect (dn 2))
-           11
-           20))
-(pr)
-(pr (hbook (loop repeat 100000 collect (dn 100))
-           100
-           10))
-(pr)
-(pr (hbook (loop repeat 30000 collect (dn 3000))
-           50
-           20))
-(pr)
-(pr (hbook (loop repeat 1000 collect (dr 10))))
-(pr)
-(pr (hbook (loop repeat 1000000
-                 collect (* 50 (- (log (random 1.0)))))
-           50
-           20))
+(comment
+ (pr (hbook '(1 2 2 3) 3 5))
+ (pr)
+ (pr (hbook '(-1 0 1) 3 5))
+ (pr)
+ (pr (hbook (loop repeat 100000 collect (dn 2))
+            11
+            20))
+ (pr)
+ (pr (hbook (loop repeat 100000 collect (dn 100))
+            100
+            10))
+ (pr)
+ (pr (hbook (loop repeat 30000 collect (dn 3000))
+            50
+            20))
+ (pr)
+ (pr (hbook (loop repeat 1000 collect (dr 10))))
+ (pr)
+ (pr (hbook (loop repeat 1000000
+                  collect (* 50 (- (log (random 1.0)))))
+            50
+            20)))
