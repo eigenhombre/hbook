@@ -1,9 +1,6 @@
 (in-package #:hbook)
 
 ;; Utilities
-(defmacro comment (&rest x)
-  (declare (ignore x)))
-
 (defun minmax (list)
   (loop for el in list
         maximizing el into max
@@ -137,6 +134,9 @@
         repeat (1- n)
         do (setf acc (dn acc))
         finally (return acc)))
+
+(defmacro comment (&rest x)
+  (declare (ignore x)))
 
 (comment
  (dr 1)

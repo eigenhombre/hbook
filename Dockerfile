@@ -15,6 +15,8 @@ RUN ecl --load quicklisp.lisp \
 RUN echo | ecl --load /home/janice/quicklisp/setup.lisp --eval '(ql:add-to-init-file)'
 RUN echo | sbcl --load /home/janice/quicklisp/setup.lisp --eval '(ql:add-to-init-file)' --quit
 
+RUN sbcl --eval '(ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)'
+
 ENV LISP_HOME=/home/janice/quicklisp/local-projects
 WORKDIR /home/janice/hbook
 

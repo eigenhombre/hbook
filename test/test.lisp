@@ -1,5 +1,5 @@
 (defpackage :hbook.test
-  (:use :cl :1am :hbook)
+  (:use :cl :1am :hbook :cl-oju)
   (:export :run-tests))
 
 (in-package #:hbook.test)
@@ -29,44 +29,19 @@
              (loop for el in '(2 3 4 5 6 7 8 9 10 11 12)
                    collect (bin-index 11 2 12 el)))))
 
-;; TODO: Use cl-oju?
-(defun take (n l)
-  "
-  Take the first `n` items from `l`.
-  "
-  (subseq l 0 n))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defun apply-bindings (bindings case expr)
+    "
+    (apply-bindings '(x y) '(2 3) '(+ x y))
 
-(defun partition-n (cell-size step-size lst)
-  "
-  Analog of Clojure's `partition` function with explicit
-  step size and padding value.
-
-  (partition-n 2 2 '(eenie meanie
-                     miney moe))
-  ;;=>
-  '((EENIE MEANIE) (MINEY MOE))
-  "
-  (let ((ret nil))
-    (loop for cell on lst
-          by #'(lambda (lst1) (nthcdr step-size lst1))
-          do (let ((this (take cell-size cell)))
-               (when (= (length (the list this))
-                        (the fixnum cell-size))
-                 (push (take cell-size cell) ret))))
-    (nreverse ret)))
-
-(defun apply-bindings (bindings case expr)
-  "
-  (apply-bindings '(x y) '(2 3) '(+ x y))
-
-  ;;=>
-  '(+ 2 3)
-  "
-  (loop with ret = expr
-        for b in bindings
-        for c in case
-        do (setf ret (subst c b ret))
-        finally (return ret)))
+    ;;=>
+    '(+ 2 3)
+    "
+    (loop with ret = expr
+          for b in bindings
+          for c in case
+          do (setf ret (subst c b ret))
+          finally (return ret))))
 
 (defmacro are (argv expr &rest cases)
   "
