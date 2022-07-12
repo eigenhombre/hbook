@@ -1,5 +1,5 @@
 (defsystem :hbook
-  :version "0.0.1"
+  :version "0.0.2-SNAPSHOT"
   :description "Text-based histograms in Common Lisp inspired by the venerable HBOOK histogramming library from CERN"
   :author "John Jacobsen"
   :license "MIT"
