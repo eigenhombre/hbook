@@ -4,7 +4,7 @@
 
 <img src="/cosb-crab-88.png" width="500">
 
-*HBOOK histogram from [an analysis of high energy cosmic ray data performed in 1988](https://ui.adsabs.harvard.edu/abs/1992ssbg.book.....B/abstract)*
+*HBOOK histogram from [an analysis of high energy cosmic ray data performed in 1988](https://scixplorer.org/abs/1992ssbg.book.....B/abstract)*
 
 # hbook
 
